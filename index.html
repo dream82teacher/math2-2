@@ -6,9 +6,16 @@
     <title>말랑말랑 여러 가지 도형 교실</title>
     <!-- Tailwind CSS (디자인) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React 및 ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- React ES Module Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.2.0",
+            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+            "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime"
+        }
+    }
+    </script>
     <!-- Babel (브라우저에서 React 코드 해석) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
@@ -17,499 +24,500 @@
     <div id="root"></div>
 
     <!-- React 애플리케이션 코드 -->
-    <script type="text/babel">
-        const { useState } = React;
+    <script type="text/babel" data-type="module">
+        import React, { useState } from 'react';
+        import { createRoot } from 'react-dom/client';
 
         // --- 아이콘 및 이미지용 SVG 컴포넌트들 ---
         const MascotCharacter = ({ mood = 'happy', className = '' }) => {
-          return (
-            <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="60" cy="60" r="45" fill="#FFF2CC" stroke="#F5B041" strokeWidth="4" />
-              <circle cx="35" cy="65" r="8" fill="#FADBD8" />
-              <circle cx="85" cy="65" r="8" fill="#FADBD8" />
-              {mood === 'happy' && (
-                <>
-                  <path d="M30 55C32 50 38 50 40 55" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" />
-                  <path d="M80 55C82 50 88 50 90 55" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" />
-                </>
-              )}
-              {mood === 'excited' && (
-                <>
-                  <path d="M30 52 L40 58 L30 64" stroke="#5D4037" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M90 52 L80 58 L90 64" stroke="#5D4037" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                </>
-              )}
-              {mood === 'sad' && (
-                <>
-                  <circle cx="35" cy="55" r="3" fill="#5D4037" />
-                  <circle cx="85" cy="55" r="3" fill="#5D4037" />
-                  <path d="M32 48 L40 51" stroke="#5D4037" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M88 48 L80 51" stroke="#5D4037" strokeWidth="2" strokeLinecap="round" />
-                </>
-              )}
-              {mood === 'happy' && <path d="M52 68C52 75 68 75 68 68" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" fill="#E74C3C" />}
-              {mood === 'excited' && <path d="M50 66 C 50 80, 70 80, 70 66 Z" fill="#E74C3C" stroke="#5D4037" strokeWidth="3" />}
-              {mood === 'sad' && <path d="M52 72C56 68 64 68 68 72" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" />}
-              <path d="M50 15 L60 5 L70 15 Z" fill="#FF8D1A" stroke="#E67E22" strokeWidth="2" />
-            </svg>
-          );
+            return (
+                <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="45" fill="#FFF2CC" stroke="#F5B041" strokeWidth="4" />
+                    <circle cx="35" cy="65" r="8" fill="#FADBD8" />
+                    <circle cx="85" cy="65" r="8" fill="#FADBD8" />
+                    {mood === 'happy' && (
+                        <>
+                            <path d="M30 55C32 50 38 50 40 55" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" />
+                            <path d="M80 55C82 50 88 50 90 55" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" />
+                        </>
+                    )}
+                    {mood === 'excited' && (
+                        <>
+                            <path d="M30 52 L40 58 L30 64" stroke="#5D4037" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M90 52 L80 58 L90 64" stroke="#5D4037" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </>
+                    )}
+                    {mood === 'sad' && (
+                        <>
+                            <circle cx="35" cy="55" r="3" fill="#5D4037" />
+                            <circle cx="85" cy="55" r="3" fill="#5D4037" />
+                            <path d="M32 48 L40 51" stroke="#5D4037" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M88 48 L80 51" stroke="#5D4037" strokeWidth="2" strokeLinecap="round" />
+                        </>
+                    )}
+                    {mood === 'happy' && <path d="M52 68C52 75 68 75 68 68" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" fill="#E74C3C" />}
+                    {mood === 'excited' && <path d="M50 66 C 50 80, 70 80, 70 66 Z" fill="#E74C3C" stroke="#5D4037" strokeWidth="3" />}
+                    {mood === 'sad' && <path d="M52 72C56 68 64 68 68 72" stroke="#5D4037" strokeWidth="3" strokeLinecap="round" />}
+                    <path d="M50 15 L60 5 L70 15 Z" fill="#FF8D1A" stroke="#E67E22" strokeWidth="2" />
+                </svg>
+            );
         };
 
         // 퀴즈 데이터 정의
         const quizData = [
-          {
-            id: 1,
-            category: '원',
-            question: '동글동글하고, 어디서 보아도 똑같이 둥근 모양이며, 뾰족한 꼭짓점과 곧은 선(변)이 없는 이 도형의 이름은 무엇일까요?',
-            svg: (
-              <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="35" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="5" />
-                <circle cx="40" cy="45" r="3" fill="#16A085" />
-                <circle cx="60" cy="45" r="3" fill="#16A085" />
-                <path d="M45 58 Q50 65 55 58" stroke="#16A085" strokeWidth="3" strokeLinecap="round" fill="none" />
-              </svg>
-            ),
-            options: ['삼각형', '사각형', '원', '오각형'],
-            answer: '원',
-            explanation: '동글동글하고 뾰족한 곳(꼭짓점)이나 곧은 선(변)이 전혀 없는 도형은 바로 「원」이에요!'
-          },
-          {
-            id: 2,
-            category: '삼각형',
-            question: '삼각형은 뾰족한 부분인 "꼭짓점"이 모두 몇 개 있을까요?',
-            svg: (
-              <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
-                <polygon points="50,15 15,75 85,75" fill="#FEF9E7" stroke="#F1C40F" strokeWidth="4" />
-                <circle cx="50" cy="15" r="7" fill="#E74C3C" />
-                <circle cx="15" cy="75" r="7" fill="#E74C3C" />
-                <circle cx="85" cy="75" r="7" fill="#E74C3C" />
-              </svg>
-            ),
-            options: ['1개', '2개', '3개', '4개'],
-            answer: '3개',
-            explanation: '삼각형은 이름에 들어있는 「삼(3)」이라는 숫자처럼 변이 3개, 꼭짓점이 3개 있는 도형이랍니다!'
-          },
-          {
-            id: 3,
-            category: '사각형',
-            question: '사각형은 곧게 뻗은 선인 "변"이 모두 몇 개 있을까요?',
-            svg: (
-              <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
-                <rect x="20" y="20" width="60" height="60" rx="2" fill="#EBF5FB" stroke="#2980B9" strokeWidth="4" />
-                <line x1="20" y1="15" x2="80" y2="15" stroke="#E74C3C" strokeWidth="3" strokeLinecap="round" />
-                <text x="50" y="10" textAnchor="middle" fill="#E74C3C" fontSize="10" fontWeight="bold">변 (곧은 선)</text>
-              </svg>
-            ),
-            options: ['2개', '3개', '4개', '5개'],
-            answer: '4개',
-            explanation: '사각형은 「사(4)」라는 숫자처럼 곧은 선인 변이 4개, 꼭짓점이 4개 있는 도형이에요!'
-          },
-          {
-            id: 4,
-            category: '원',
-            question: '다음 중 우리 주변에서 볼 수 있는 물건들 중에서 「원」 모양을 하고 있는 것은 무엇일까요?',
-            svg: (
-              <div className="flex justify-around items-center h-20 w-full max-w-sm mx-auto bg-amber-50 rounded-xl p-2 border border-amber-200">
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <polygon points="10,50 50,50 50,10" fill="#FCF3CF" stroke="#F39C12" strokeWidth="2" />
-                    <polygon points="20,45 45,45 45,20" fill="white" stroke="#F39C12" strokeWidth="1" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">① 삼각자</span>
-                </div>
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="22" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="3" />
-                    <line x1="30" y1="30" x2="30" y2="16" stroke="#2C3E50" strokeWidth="2" strokeLinecap="round" />
-                    <line x1="30" y1="30" x2="42" y2="30" stroke="#2C3E50" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">② 벽시계</span>
-                </div>
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <rect x="15" y="10" width="30" height="40" rx="2" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2" />
-                    <line x1="20" y1="18" x2="40" y2="18" stroke="#AED6F1" strokeWidth="2" />
-                    <line x1="20" y1="28" x2="40" y2="28" stroke="#AED6F1" strokeWidth="2" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">③ 동화책</span>
-                </div>
-              </div>
-            ),
-            options: ['① 삼각자', '② 벽시계', '③ 동화책'],
-            answer: '② 벽시계',
-            explanation: '벽시계는 동글동글하고 둥근 모양을 가진 「원」 모양이에요. 삼각자는 삼각형, 동화책은 사각형이랍니다.'
-          },
-          {
-            id: 5,
-            category: '삼각형',
-            question: '수학 나라의 요정이 설명하는 규칙에 알맞은 도형을 골라보세요. "선분(곧은 선) 3개로 완전히 둘러싸여 있는 도형은 누구일까요?"',
-            svg: (
-              <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
-                <polygon points="50,20 20,80 80,80" fill="#FDEDEC" stroke="#E74C3C" strokeWidth="3" />
-              </svg>
-            ),
-            options: ['원', '삼각형', '사각형', '육각형'],
-            answer: '삼각형',
-            explanation: '곧은 선(선분) 3개로 둘러싸인 도형은 「삼각형」입니다. 완전히 닫혀 있어야만 도형이라고 부를 수 있어요!'
-          },
-          {
-            id: 6,
-            category: '도형 응용',
-            question: '아래의 귀여운 집 그림 속에서 지붕에 해당하는 「삼각형」은 모두 몇 개일까요?',
-            svg: (
-              <svg className="w-32 h-32 mx-auto" viewBox="0 0 120 120">
-                <polygon points="60,15 20,50 100,50" fill="#FADBD8" stroke="#E74C3C" strokeWidth="3" />
-                <rect x="30" y="50" width="60" height="55" fill="#FEF9E7" stroke="#F1C40F" strokeWidth="3" />
-                <circle cx="60" cy="70" r="10" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="2" />
-                <rect x="50" y="85" width="20" height="20" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2" />
-              </svg>
-            ),
-            options: ['1개', '2개', '3개', '없음'],
-            answer: '1개',
-            explanation: '집 그림에서 빨간색 지붕 부분이 바로 꼭짓점이 3개, 변이 3개인 「삼각형」입니다. 개수는 총 1개예요!'
-          },
-          {
-            id: 7,
-            category: '사각형',
-            question: '다음 중에서 사각형이 「아닌」 도형은 무엇일까요?',
-            svg: (
-              <div className="flex justify-around items-center h-20 w-full max-w-sm mx-auto bg-blue-50 rounded-xl p-2 border border-blue-200">
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <rect x="15" y="15" width="30" height="30" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2.5" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">①번 도형</span>
-                </div>
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <polygon points="20,15 40,15 50,45 10,45" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2.5" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">②번 도형</span>
-                </div>
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <polygon points="30,10 50,25 42,48 18,48 10,25" fill="#FDEDEC" stroke="#E74C3C" strokeWidth="2.5" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">③번 도형</span>
-                </div>
-              </div>
-            ),
-            options: ['①번 도형', '②번 도형', '③번 도형'],
-            answer: '③번 도형',
-            explanation: '①번과 ②번은 변과 꼭짓점이 각각 4개씩 있는 사각형이에요. 하지만 ③번 도형은 변이 5개, 꼭짓점이 5개인 오각형이라서 사각형이 아니랍니다.'
-          },
-          {
-            id: 8,
-            category: '도형 개념',
-            question: '도형은 선들이 끊어지지 않고 완전히 닫혀 있어야 해요. 다음 그림 중 뚫려 있는 곳이 있어서 도형이 「아닌」 것은 무엇일까요?',
-            svg: (
-              <div className="flex justify-around items-center h-20 w-full max-w-sm mx-auto bg-pink-50 rounded-xl p-2 border border-pink-200">
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <polygon points="30,15 15,45 45,45" fill="#EAFAF1" stroke="#27AE60" strokeWidth="2.5" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">①번</span>
-                </div>
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <path d="M30 15 L15 45 L40 45" fill="none" stroke="#E74C3C" strokeWidth="3" strokeLinecap="round" />
-                    <circle cx="45" cy="45" r="3" fill="#E74C3C" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">②번</span>
-                </div>
-                <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
-                    <rect x="15" y="15" width="30" height="30" fill="#EAFAF1" stroke="#27AE60" strokeWidth="2.5" />
-                  </svg>
-                  <span className="text-[10px] font-bold text-slate-600">③번</span>
-                </div>
-              </div>
-            ),
-            options: ['①번', '②번', '③번'],
-            answer: '②번',
-            explanation: '②번은 밑부분 한쪽이 뻥 뚫려 있어서 둘러싸여 있지 않아요. 선으로 완전히 닫혀 있어야 수학의 도형(삼각형)이 될 수 있답니다!'
-          },
-          {
-            id: 9,
-            category: '도형 응용',
-            question: '다시 집 그림을 보며 생각해 보아요. 이 집에서 「사각형」은 모두 몇 개 있을까요?',
-            svg: (
-              <svg className="w-32 h-32 mx-auto" viewBox="0 0 120 120">
-                <polygon points="60,15 20,50 100,50" fill="#FADBD8" stroke="#E74C3C" strokeWidth="2" />
-                <rect x="30" y="50" width="60" height="55" fill="#FEF9E7" stroke="#F1C40F" strokeWidth="4" />
-                <circle cx="60" cy="70" r="10" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="2" />
-                <rect x="50" y="85" width="20" height="20" fill="#EBF5FB" stroke="#2980B9" strokeWidth="4" />
-              </svg>
-            ),
-            options: ['1개', '2개', '3개', '4개'],
-            answer: '2개',
-            explanation: '정답은 2개입니다! 큰 노란색 벽(정사각형) 1개와 입구에 있는 작은 파란색 문(직사각형) 1개가 바로 사각형에 해당해요!'
-          },
-          {
-            id: 10,
-            category: '도형 종합',
-            question: '어떤 도형인지 맞혀 보세요! "나는 곧은 선(변)이 4개 있고, 뾰족한 꼭짓점도 4개 있어. 내 이름은 무엇일까요?"',
-            svg: (
-              <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
-                <rect x="25" y="25" width="50" height="50" fill="#FDEDEC" stroke="#E74C3C" strokeWidth="3" />
-                <circle cx="25" cy="25" r="4" fill="#34495E" />
-                <circle cx="75" cy="25" r="4" fill="#34495E" />
-                <circle cx="75" cy="75" r="4" fill="#34495E" />
-                <circle cx="25" cy="75" r="4" fill="#34495E" />
-              </svg>
-            ),
-            options: ['원', '삼각형', '사각형', '오각형'],
-            answer: '사각형',
-            explanation: '변이 4개이고 꼭짓점이 4개 있는 도형은 바로 「사각형」입니다. 우리 교실의 칠판, 공책, 책상 상판 등이 사각형 모양이에요!'
-          }
+            {
+                id: 1,
+                category: '원',
+                question: '동글동글하고, 어디서 보아도 똑같이 둥근 모양이며, 뾰족한 꼭짓점과 곧은 선(변)이 없는 이 도형의 이름은 무엇일까요?',
+                svg: (
+                    <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="35" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="5" />
+                        <circle cx="40" cy="45" r="3" fill="#16A085" />
+                        <circle cx="60" cy="45" r="3" fill="#16A085" />
+                        <path d="M45 58 Q50 65 55 58" stroke="#16A085" strokeWidth="3" strokeLinecap="round" fill="none" />
+                    </svg>
+                ),
+                options: ['삼각형', '사각형', '원', '오각형'],
+                answer: '원',
+                explanation: '동글동글하고 뾰족한 곳(꼭짓점)이나 곧은 선(변)이 전혀 없는 도형은 바로 「원」이에요!'
+            },
+            {
+                id: 2,
+                category: '삼각형',
+                question: '삼각형은 뾰족한 부분인 "꼭짓점"이 모두 몇 개 있을까요?',
+                svg: (
+                    <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
+                        <polygon points="50,15 15,75 85,75" fill="#FEF9E7" stroke="#F1C40F" strokeWidth="4" />
+                        <circle cx="50" cy="15" r="7" fill="#E74C3C" />
+                        <circle cx="15" cy="75" r="7" fill="#E74C3C" />
+                        <circle cx="85" cy="75" r="7" fill="#E74C3C" />
+                    </svg>
+                ),
+                options: ['1개', '2개', '3개', '4개'],
+                answer: '3개',
+                explanation: '삼각형은 이름에 들어있는 「삼(3)」이라는 숫자처럼 변이 3개, 꼭짓점이 3개 있는 도형이랍니다!'
+            },
+            {
+                id: 3,
+                category: '사각형',
+                question: '사각형은 곧게 뻗은 선인 "변"이 모두 몇 개 있을까요?',
+                svg: (
+                    <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
+                        <rect x="20" y="20" width="60" height="60" rx="2" fill="#EBF5FB" stroke="#2980B9" strokeWidth="4" />
+                        <line x1="20" y1="15" x2="80" y2="15" stroke="#E74C3C" strokeWidth="3" strokeLinecap="round" />
+                        <text x="50" y="10" textAnchor="middle" fill="#E74C3C" fontSize="10" fontWeight="bold">변 (곧은 선)</text>
+                    </svg>
+                ),
+                options: ['2개', '3개', '4개', '5개'],
+                answer: '4개',
+                explanation: '사각형은 「사(4)」라는 숫자처럼 곧은 선인 변이 4개, 꼭짓점이 4개 있는 도형이에요!'
+            },
+            {
+                id: 4,
+                category: '원',
+                question: '다음 중 우리 주변에서 볼 수 있는 물건들 중에서 「원」 모양을 하고 있는 것은 무엇일까요?',
+                svg: (
+                    <div className="flex justify-around items-center h-20 w-full max-w-sm mx-auto bg-amber-50 rounded-xl p-2 border border-amber-200">
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <polygon points="10,50 50,50 50,10" fill="#FCF3CF" stroke="#F39C12" strokeWidth="2" />
+                                <polygon points="20,45 45,45 45,20" fill="white" stroke="#F39C12" strokeWidth="1" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">① 삼각자</span>
+                        </div>
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="22" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="3" />
+                                <line x1="30" y1="30" x2="30" y2="16" stroke="#2C3E50" strokeWidth="2" strokeLinecap="round" />
+                                <line x1="30" y1="30" x2="42" y2="30" stroke="#2C3E50" strokeWidth="1.5" strokeLinecap="round" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">② 벽시계</span>
+                        </div>
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <rect x="15" y="10" width="30" height="40" rx="2" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2" />
+                                <line x1="20" y1="18" x2="40" y2="18" stroke="#AED6F1" strokeWidth="2" />
+                                <line x1="20" y1="28" x2="40" y2="28" stroke="#AED6F1" strokeWidth="2" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">③ 동화책</span>
+                        </div>
+                    </div>
+                ),
+                options: ['① 삼각자', '② 벽시계', '③ 동화책'],
+                answer: '② 벽시계',
+                explanation: '벽시계는 동글동글하고 둥근 모양을 가진 「원」 모양이에요. 삼각자는 삼각형, 동화책은 사각형이랍니다.'
+            },
+            {
+                id: 5,
+                category: '삼각형',
+                question: '수학 나라의 요정이 설명하는 규칙에 알맞은 도형을 골라보세요. "선분(곧은 선) 3개로 완전히 둘러싸여 있는 도형은 누구일까요?"',
+                svg: (
+                    <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
+                        <polygon points="50,20 20,80 80,80" fill="#FDEDEC" stroke="#E74C3C" strokeWidth="3" />
+                    </svg>
+                ),
+                options: ['원', '삼각형', '사각형', '육각형'],
+                answer: '삼각형',
+                explanation: '곧은 선(선분) 3개로 둘러싸인 도형은 「삼각형」입니다. 완전히 닫혀 있어야만 도형이라고 부를 수 있어요!'
+            },
+            {
+                id: 6,
+                category: '도형 응용',
+                question: '아래의 귀여운 집 그림 속에서 지붕에 해당하는 「삼각형」은 모두 몇 개일까요?',
+                svg: (
+                    <svg className="w-32 h-32 mx-auto" viewBox="0 0 120 120">
+                        <polygon points="60,15 20,50 100,50" fill="#FADBD8" stroke="#E74C3C" strokeWidth="3" />
+                        <rect x="30" y="50" width="60" height="55" fill="#FEF9E7" stroke="#F1C40F" strokeWidth="3" />
+                        <circle cx="60" cy="70" r="10" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="2" />
+                        <rect x="50" y="85" width="20" height="20" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2" />
+                    </svg>
+                ),
+                options: ['1개', '2개', '3개', '없음'],
+                answer: '1개',
+                explanation: '집 그림에서 빨간색 지붕 부분이 바로 꼭짓점이 3개, 변이 3개인 「삼각형」입니다. 개수는 총 1개예요!'
+            },
+            {
+                id: 7,
+                category: '사각형',
+                question: '다음 중에서 사각형이 「아닌」 도형은 무엇일까요?',
+                svg: (
+                    <div className="flex justify-around items-center h-20 w-full max-w-sm mx-auto bg-blue-50 rounded-xl p-2 border border-blue-200">
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <rect x="15" y="15" width="30" height="30" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2.5" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">①번 도형</span>
+                        </div>
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <polygon points="20,15 40,15 50,45 10,45" fill="#EBF5FB" stroke="#2980B9" strokeWidth="2.5" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">②번 도형</span>
+                        </div>
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <polygon points="30,10 50,25 42,48 18,48 10,25" fill="#FDEDEC" stroke="#E74C3C" strokeWidth="2.5" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">③번 도형</span>
+                        </div>
+                    </div>
+                ),
+                options: ['①번 도형', '②번 도형', '③번 도형'],
+                answer: '③번 도형',
+                explanation: '①번과 ②번은 변과 꼭짓점이 각각 4개씩 있는 사각형이에요. 하지만 ③번 도형은 변이 5개, 꼭짓점이 5개인 오각형이라서 사각형이 아니랍니다.'
+            },
+            {
+                id: 8,
+                category: '도형 개념',
+                question: '도형은 선들이 끊어지지 않고 완전히 닫혀 있어야 해요. 다음 그림 중 뚫려 있는 곳이 있어서 도형이 「아닌」 것은 무엇일까요?',
+                svg: (
+                    <div className="flex justify-around items-center h-20 w-full max-w-sm mx-auto bg-pink-50 rounded-xl p-2 border border-pink-200">
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <polygon points="30,15 15,45 45,45" fill="#EAFAF1" stroke="#27AE60" strokeWidth="2.5" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">①번</span>
+                        </div>
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <path d="M30 15 L15 45 L40 45" fill="none" stroke="#E74C3C" strokeWidth="3" strokeLinecap="round" />
+                                <circle cx="45" cy="45" r="3" fill="#E74C3C" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">②번</span>
+                        </div>
+                        <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto" viewBox="0 0 60 60">
+                                <rect x="15" y="15" width="30" height="30" fill="#EAFAF1" stroke="#27AE60" strokeWidth="2.5" />
+                            </svg>
+                            <span className="text-[10px] font-bold text-slate-600">③번</span>
+                        </div>
+                    </div>
+                ),
+                options: ['①번', '②번', '③번'],
+                answer: '②번',
+                explanation: '②번은 밑부분 한쪽이 뻥 뚫려 있어서 둘러싸여 있지 않아요. 선으로 완전히 닫혀 있어야 수학의 도형(삼각형)이 될 수 있답니다!'
+            },
+            {
+                id: 9,
+                category: '도형 응용',
+                question: '다시 집 그림을 보며 생각해 보아요. 이 집에서 「사각형」은 모두 몇 개 있을까요?',
+                svg: (
+                    <svg className="w-32 h-32 mx-auto" viewBox="0 0 120 120">
+                        <polygon points="60,15 20,50 100,50" fill="#FADBD8" stroke="#E74C3C" strokeWidth="2" />
+                        <rect x="30" y="50" width="60" height="55" fill="#FEF9E7" stroke="#F1C40F" strokeWidth="4" />
+                        <circle cx="60" cy="70" r="10" fill="#E8F8F5" stroke="#1ABC9C" strokeWidth="2" />
+                        <rect x="50" y="85" width="20" height="20" fill="#EBF5FB" stroke="#2980B9" strokeWidth="4" />
+                    </svg>
+                ),
+                options: ['1개', '2개', '3개', '4개'],
+                answer: '2개',
+                explanation: '정답은 2개입니다! 큰 노란색 벽(정사각형) 1개와 입구에 있는 작은 파란색 문(직사각형) 1개가 바로 사각형에 해당해요!'
+            },
+            {
+                id: 10,
+                category: '도형 종합',
+                question: '어떤 도형인지 맞혀 보세요! "나는 곧은 선(변)이 4개 있고, 뾰족한 꼭짓점도 4개 있어. 내 이름은 무엇일까요?"',
+                svg: (
+                    <svg className="w-28 h-28 mx-auto" viewBox="0 0 100 100">
+                        <rect x="25" y="25" width="50" height="50" fill="#FDEDEC" stroke="#E74C3C" strokeWidth="3" />
+                        <circle cx="25" cy="25" r="4" fill="#34495E" />
+                        <circle cx="75" cy="25" r="4" fill="#34495E" />
+                        <circle cx="75" cy="75" r="4" fill="#34495E" />
+                        <circle cx="25" cy="75" r="4" fill="#34495E" />
+                    </svg>
+                ),
+                options: ['원', '삼각형', '사각형', '오각형'],
+                answer: '사각형',
+                explanation: '변이 4개이고 꼭짓점이 4개 있는 도형은 바로 「사각형」입니다. 우리 교실의 칠판, 공책, 책상 상판 등이 사각형 모양이에요!'
+            }
         ];
 
         function App() {
-          const [userName, setUserName] = useState('');
-          const [isStarted, setIsStarted] = useState(false);
-          const [currentIdx, setCurrentIdx] = useState(0);
-          const [selectedAnswer, setSelectedAnswer] = useState(null);
-          const [isSubmitted, setIsSubmitted] = useState(false);
-          const [userAnswers, setUserAnswers] = useState(Array(quizData.length).fill(null));
-          const [score, setScore] = useState(0);
-          const [showResult, setShowResult] = useState(false);
+            const [userName, setUserName] = useState('');
+            const [isStarted, setIsStarted] = useState(false);
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [isSubmitted, setIsSubmitted] = useState(false);
+            const [userAnswers, setUserAnswers] = useState(Array(quizData.length).fill(null));
+            const [score, setScore] = useState(0);
+            const [showResult, setShowResult] = useState(false);
 
-          const handleStart = (e) => {
-            e.preventDefault();
-            if (userName.trim() === '') {
-              setUserName('도형이 수강생');
-            }
-            setIsStarted(true);
-          };
+            const handleStart = (e) => {
+                e.preventDefault();
+                if (userName.trim() === '') {
+                    setUserName('도형이 수강생');
+                }
+                setIsStarted(true);
+            };
 
-          const handleOptionClick = (option) => {
-            if (isSubmitted) return;
-            setSelectedAnswer(option);
-            setIsSubmitted(true);
+            const handleOptionClick = (option) => {
+                if (isSubmitted) return;
+                setSelectedAnswer(option);
+                setIsSubmitted(true);
 
-            const newUserAnswers = [...userAnswers];
-            newUserAnswers[currentIdx] = option;
-            setUserAnswers(newUserAnswers);
+                const newUserAnswers = [...userAnswers];
+                newUserAnswers[currentIdx] = option;
+                setUserAnswers(newUserAnswers);
 
-            const isCorrect = option === quizData[currentIdx].answer;
-            if (isCorrect) {
-              setScore((prev) => prev + 10);
-            }
-          };
+                const isCorrect = option === quizData[currentIdx].answer;
+                if (isCorrect) {
+                    setScore((prev) => prev + 10);
+                }
+            };
 
-          const handleNext = () => {
-            if (currentIdx < quizData.length - 1) {
-              setCurrentIdx((prev) => prev + 1);
-              setSelectedAnswer(null);
-              setIsSubmitted(false);
-            } else {
-              setShowResult(true);
-            }
-          };
+            const handleNext = () => {
+                if (currentIdx < quizData.length - 1) {
+                    setCurrentIdx((prev) => prev + 1);
+                    setSelectedAnswer(null);
+                    setIsSubmitted(false);
+                } else {
+                    setShowResult(true);
+                }
+            };
 
-          const handleRestart = () => {
-            setCurrentIdx(0);
-            setSelectedAnswer(null);
-            setIsSubmitted(false);
-            setUserAnswers(Array(quizData.length).fill(null));
-            setScore(0);
-            setShowResult(false);
-          };
+            const handleRestart = () => {
+                setCurrentIdx(0);
+                setSelectedAnswer(null);
+                setIsSubmitted(false);
+                setUserAnswers(Array(quizData.length).fill(null));
+                setScore(0);
+                setShowResult(false);
+            };
 
-          return (
-            <div className="min-h-screen bg-gradient-to-b from-sky-100 via-amber-50 to-emerald-50 text-slate-800 font-sans p-2 md:p-4 flex items-center justify-center">
-              <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-amber-300 flex flex-col">
-                
-                <header className="bg-gradient-to-r from-amber-300 via-orange-300 to-amber-300 p-3 text-center relative flex-shrink-0">
-                  <div className="absolute top-2 left-4 text-xl">🔺</div>
-                  <div className="absolute top-2 right-4 text-xl">🟡</div>
-                  <h1 className="text-xl md:text-2xl font-extrabold text-amber-900 tracking-tight flex justify-center items-center gap-2">
-                    🎨 말랑말랑 여러 가지 도형 교실 ⬛
-                  </h1>
-                  <p className="text-[10px] md:text-xs text-amber-950 font-bold mt-0.5">
-                    초등학교 2학년 수학 (삼각형 · 사각형 · 원)
-                  </p>
-                </header>
-
-                <div className="flex-grow p-4 md:p-5">
-                  {!isStarted && (
-                    <div className="text-center space-y-4">
-                      <div className="flex justify-center">
-                        <MascotCharacter mood="excited" className="w-24 h-24 animate-bounce" />
-                      </div>
-                      <div className="space-y-1">
-                        <h2 className="text-lg md:text-xl font-bold text-slate-700">도형의 비밀을 풀러 가볼까요?</h2>
-                        <p className="text-xs md:text-sm text-slate-500">삼각형, 사각형, 원의 이름과 모양을 쉽고 재미있게 배워요!</p>
-                      </div>
-                      <form onSubmit={handleStart} className="max-w-sm mx-auto space-y-3 pt-2">
-                        <div className="bg-amber-100 rounded-xl p-3 border-2 border-dashed border-amber-400">
-                          <label className="block text-xs font-black text-amber-800 mb-2">
-                            이름을 가르쳐 주면 더 신나는 공부가 될 거예요!
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="예) 홍길동"
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            className="w-full px-3 py-2 rounded-lg border-2 border-amber-200 focus:border-amber-500 focus:outline-none text-center text-base font-bold"
-                            maxLength={10}
-                          />
-                        </div>
-                        <button
-                          type="submit"
-                          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-lg py-3 rounded-xl shadow-md transform transition active:scale-95"
-                        >
-                          도형 공부 시작하기! 🚀
-                        </button>
-                      </form>
-                    </div>
-                  )}
-
-                  {isStarted && !showResult && (
-                    <div className="flex flex-col h-full gap-3">
-                      <div className="flex justify-between items-center text-xs font-bold text-slate-500">
-                        <span className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">학생: {userName}</span>
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">문제 {currentIdx + 1} / {quizData.length}</span>
-                      </div>
-                      <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-1">
-                        <div className="bg-gradient-to-r from-emerald-400 to-sky-400 h-full transition-all duration-300" style={{ width: `${((currentIdx + 1) / quizData.length) * 100}%` }}></div>
-                      </div>
-
-                      <div className="flex flex-col md:flex-row gap-4 flex-grow">
+            return (
+                <div className="min-h-screen bg-gradient-to-b from-sky-100 via-amber-50 to-emerald-50 text-slate-800 font-sans p-2 md:p-4 flex items-center justify-center">
+                    <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-amber-300 flex flex-col">
                         
-                        <div className="md:w-1/2 flex flex-col gap-2">
-                          <div className="bg-slate-50 rounded-xl border border-slate-200 p-3 flex-grow flex flex-col justify-center text-center">
-                            <div className="flex items-center justify-center gap-2 mb-2">
-                              <span className="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-md font-extrabold">
-                                {quizData[currentIdx].category}
-                              </span>
-                            </div>
-                            <h3 className="text-sm md:text-base font-bold text-slate-800 leading-snug mb-3">
-                              {quizData[currentIdx].question}
-                            </h3>
-                            <div className="py-2 flex justify-center items-center">
-                              {quizData[currentIdx].svg}
-                            </div>
-                          </div>
-                        </div>
+                        <header className="bg-gradient-to-r from-amber-300 via-orange-300 to-amber-300 p-3 text-center relative flex-shrink-0">
+                            <div className="absolute top-2 left-4 text-xl">🔺</div>
+                            <div className="absolute top-2 right-4 text-xl">🟡</div>
+                            <h1 className="text-xl md:text-2xl font-extrabold text-amber-900 tracking-tight flex justify-center items-center gap-2">
+                                🎨 말랑말랑 여러 가지 도형 교실 ⬛
+                            </h1>
+                            <p className="text-[10px] md:text-xs text-amber-950 font-bold mt-0.5">
+                                초등학교 2학년 수학 (삼각형 · 사각형 · 원)
+                            </p>
+                        </header>
 
-                        <div className="md:w-1/2 flex flex-col gap-3">
-                          <div className="grid grid-cols-2 gap-2">
-                            {quizData[currentIdx].options.map((option, index) => {
-                              const isCorrectOption = option === quizData[currentIdx].answer;
-                              const isSelected = selectedAnswer === option;
-                              let btnStyle = "bg-white border border-slate-200 hover:bg-slate-50 shadow-sm";
-                              
-                              if (isSubmitted) {
-                                if (isCorrectOption) btnStyle = "bg-emerald-100 border-emerald-400 text-emerald-900 shadow-none";
-                                else if (isSelected) btnStyle = "bg-rose-100 border-rose-400 text-rose-900 shadow-none";
-                                else btnStyle = "bg-slate-50 border-slate-100 text-slate-400 opacity-60 shadow-none";
-                              }
+                        <div className="flex-grow p-4 md:p-5">
+                            {!isStarted && (
+                                <div className="text-center space-y-4">
+                                    <div className="flex justify-center">
+                                        <MascotCharacter mood="excited" className="w-24 h-24 animate-bounce" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h2 className="text-lg md:text-xl font-bold text-slate-700">도형의 비밀을 풀러 가볼까요?</h2>
+                                        <p className="text-xs md:text-sm text-slate-500">삼각형, 사각형, 원의 이름과 모양을 쉽고 재미있게 배워요!</p>
+                                    </div>
+                                    <form onSubmit={handleStart} className="max-w-sm mx-auto space-y-3 pt-2">
+                                        <div className="bg-amber-100 rounded-xl p-3 border-2 border-dashed border-amber-400">
+                                            <label className="block text-xs font-black text-amber-800 mb-2">
+                                                이름을 가르쳐 주면 더 신나는 공부가 될 거예요!
+                                            </label>
+                                            <input
+                                                type="text"
+                                                placeholder="예) 홍길동"
+                                                value={userName}
+                                                onChange={(e) => setUserName(e.target.value)}
+                                                className="w-full px-3 py-2 rounded-lg border-2 border-amber-200 focus:border-amber-500 focus:outline-none text-center text-base font-bold"
+                                                maxLength={10}
+                                            />
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-lg py-3 rounded-xl shadow-md transform transition active:scale-95"
+                                        >
+                                            도형 공부 시작하기! 🚀
+                                        </button>
+                                    </form>
+                                </div>
+                            )}
 
-                              return (
-                                <button
-                                  key={index}
-                                  onClick={() => handleOptionClick(option)}
-                                  disabled={isSubmitted}
-                                  className={`w-full py-3 px-2 rounded-xl text-center font-bold text-xs md:text-sm transition-all duration-150 border-2 ${btnStyle}`}
-                                >
-                                  <div className="mb-1">{option}</div>
-                                  {isSubmitted && isCorrectOption && <div className="text-[10px] text-emerald-600 font-extrabold">⭕ 정답</div>}
-                                  {isSubmitted && isSelected && !isCorrectOption && <div className="text-[10px] text-rose-600 font-extrabold">❌ 오답</div>}
+                            {isStarted && !showResult && (
+                                <div className="flex flex-col h-full gap-3">
+                                    <div className="flex justify-between items-center text-xs font-bold text-slate-500">
+                                        <span className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">학생: {userName}</span>
+                                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">문제 {currentIdx + 1} / {quizData.length}</span>
+                                    </div>
+                                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-1">
+                                        <div className="bg-gradient-to-r from-emerald-400 to-sky-400 h-full transition-all duration-300" style={{ width: `${((currentIdx + 1) / quizData.length) * 100}%` }}></div>
+                                    </div>
+
+                                    <div className="flex flex-col md:flex-row gap-4 flex-grow">
+                                        
+                                        <div className="md:w-1/2 flex flex-col gap-2">
+                                            <div className="bg-slate-50 rounded-xl border border-slate-200 p-3 flex-grow flex flex-col justify-center text-center">
+                                                <div className="flex items-center justify-center gap-2 mb-2">
+                                                    <span className="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-md font-extrabold">
+                                                        {quizData[currentIdx].category}
+                                                    </span>
+                                                </div>
+                                                <h3 className="text-sm md:text-base font-bold text-slate-800 leading-snug mb-3">
+                                                    {quizData[currentIdx].question}
+                                                </h3>
+                                                <div className="py-2 flex justify-center items-center">
+                                                    {quizData[currentIdx].svg}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="md:w-1/2 flex flex-col gap-3">
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {quizData[currentIdx].options.map((option, index) => {
+                                                    const isCorrectOption = option === quizData[currentIdx].answer;
+                                                    const isSelected = selectedAnswer === option;
+                                                    let btnStyle = "bg-white border border-slate-200 hover:bg-slate-50 shadow-sm";
+                                                    
+                                                    if (isSubmitted) {
+                                                        if (isCorrectOption) btnStyle = "bg-emerald-100 border-emerald-400 text-emerald-900 shadow-none";
+                                                        else if (isSelected) btnStyle = "bg-rose-100 border-rose-400 text-rose-900 shadow-none";
+                                                        else btnStyle = "bg-slate-50 border-slate-100 text-slate-400 opacity-60 shadow-none";
+                                                    }
+
+                                                    return (
+                                                        <button
+                                                            key={index}
+                                                            onClick={() => handleOptionClick(option)}
+                                                            disabled={isSubmitted}
+                                                            className={`w-full py-3 px-2 rounded-xl text-center font-bold text-xs md:text-sm transition-all duration-150 border-2 ${btnStyle}`}
+                                                        >
+                                                            <div className="mb-1">{option}</div>
+                                                            {isSubmitted && isCorrectOption && <div className="text-[10px] text-emerald-600 font-extrabold">⭕ 정답</div>}
+                                                            {isSubmitted && isSelected && !isCorrectOption && <div className="text-[10px] text-rose-600 font-extrabold">❌ 오답</div>}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+
+                                            {isSubmitted && (
+                                                <div className={`p-3 rounded-xl border-2 flex-grow flex flex-col justify-between animate-fadeIn ${
+                                                    selectedAnswer === quizData[currentIdx].answer ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'
+                                                }`}>
+                                                    <div className="flex items-start gap-2">
+                                                        <div className="w-10 h-10 flex-shrink-0">
+                                                            <MascotCharacter mood={selectedAnswer === quizData[currentIdx].answer ? 'excited' : 'sad'} className="w-full h-full"/>
+                                                        </div>
+                                                        <div>
+                                                            <h4 className={`text-sm font-black mb-1 ${selectedAnswer === quizData[currentIdx].answer ? 'text-emerald-800' : 'text-rose-800'}`}>
+                                                                {selectedAnswer === quizData[currentIdx].answer ? '정답입니다! 🎉' : '다시 확인해 볼까요? 💡'}
+                                                            </h4>
+                                                            <p className="text-[11px] text-slate-700 leading-snug font-medium">
+                                                                {quizData[currentIdx].explanation}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mt-3 flex justify-end">
+                                                        <button
+                                                            onClick={handleNext}
+                                                            className="bg-slate-800 hover:bg-slate-900 text-white font-extrabold px-5 py-2 rounded-lg text-xs transition-all active:scale-95"
+                                                        >
+                                                            {currentIdx < quizData.length - 1 ? '다음 문제 ▶' : '결과 보기 📊'}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {showResult && (
+                                <div className="space-y-4">
+                                    <div className="text-center space-y-2">
+                                        <div className="inline-block relative">
+                                            <MascotCharacter mood={score >= 80 ? 'excited' : 'happy'} className="w-16 h-16 mx-auto" />
+                                            <span className="absolute -top-1 -right-1 text-xl animate-pulse">👑</span>
+                                        </div>
+                                        <h2 className="text-xl font-black text-slate-800">🎉 {userName} 학생, 수고했어요! 🎉</h2>
+                                        <div className="bg-amber-100 rounded-2xl p-3 border-2 border-dashed border-amber-400 inline-block w-48">
+                                            <p className="text-xs font-bold text-amber-900">도형 박사 점수</p>
+                                            <p className="text-3xl font-black text-orange-600">{score}점</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="text-sm font-black text-slate-800 border-b border-amber-300 pb-1 mb-2">
+                                            ✍️ 오답 정리 노트
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[35vh] overflow-y-auto pr-1 pb-1">
+                                            {quizData.map((quiz, idx) => {
+                                                const isUserCorrect = userAnswers[idx] === quiz.answer;
+                                                return (
+                                                    <div key={quiz.id} className={`p-2.5 rounded-xl border text-[11px] ${isUserCorrect ? 'bg-emerald-50 border-emerald-100' : 'bg-rose-50 border-rose-200'}`}>
+                                                        <div className="flex justify-between items-center mb-1.5">
+                                                            <span className="font-bold text-slate-700">Q{quiz.id}. {quiz.category}</span>
+                                                            <span className={`px-1.5 py-0.5 rounded font-black text-[9px] ${isUserCorrect ? 'bg-emerald-200 text-emerald-800' : 'bg-rose-200 text-rose-800'}`}>
+                                                                {isUserCorrect ? '⭕ 맞힘' : '❌ 틀림'}
+                                                            </span>
+                                                        </div>
+                                                        <p className="font-semibold text-slate-600 truncate">{quiz.question}</p>
+                                                        <div className="mt-1.5 bg-white/60 p-1.5 rounded-lg border border-slate-100/50">
+                                                            <p className="text-slate-500"><strong className="text-slate-800">정답:</strong> {quiz.answer} <span className="mx-1 text-slate-300">|</span> <strong className="text-slate-800">선택:</strong> {userAnswers[idx] || '미응답'}</p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-2 pt-1">
+                                        <button onClick={handleRestart} className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl shadow-sm text-sm active:scale-95">
+                                            🔄 다시 풀기
+                                        </button>
+                                        <button onClick={() => {setIsStarted(false); setUserName(''); setShowResult(false);}} className="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl shadow-sm text-sm active:scale-95">
+                                    🏠 첫 화면으로
                                 </button>
-                              );
-                            })}
-                          </div>
-
-                          {isSubmitted && (
-                            <div className={`p-3 rounded-xl border-2 flex-grow flex flex-col justify-between animate-fadeIn ${
-                              selectedAnswer === quizData[currentIdx].answer ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'
-                            }`}>
-                              <div className="flex items-start gap-2">
-                                <div className="w-10 h-10 flex-shrink-0">
-                                  <MascotCharacter mood={selectedAnswer === quizData[currentIdx].answer ? 'excited' : 'sad'} className="w-full h-full"/>
-                                </div>
-                                <div>
-                                  <h4 className={`text-sm font-black mb-1 ${selectedAnswer === quizData[currentIdx].answer ? 'text-emerald-800' : 'text-rose-800'}`}>
-                                    {selectedAnswer === quizData[currentIdx].answer ? '정답입니다! 🎉' : '다시 확인해 볼까요? 💡'}
-                                  </h4>
-                                  <p className="text-[11px] text-slate-700 leading-snug font-medium">
-                                    {quizData[currentIdx].explanation}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="mt-3 flex justify-end">
-                                <button
-                                  onClick={handleNext}
-                                  className="bg-slate-800 hover:bg-slate-900 text-white font-extrabold px-5 py-2 rounded-lg text-xs transition-all active:scale-95"
-                                >
-                                  {currentIdx < quizData.length - 1 ? '다음 문제 ▶' : '결과 보기 📊'}
-                                </button>
-                              </div>
                             </div>
-                          )}
                         </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {showResult && (
-                    <div className="space-y-4">
-                      <div className="text-center space-y-2">
-                        <div className="inline-block relative">
-                          <MascotCharacter mood={score >= 80 ? 'excited' : 'happy'} className="w-16 h-16 mx-auto" />
-                          <span className="absolute -top-1 -right-1 text-xl animate-pulse">👑</span>
-                        </div>
-                        <h2 className="text-xl font-black text-slate-800">🎉 {userName} 학생, 수고했어요! 🎉</h2>
-                        <div className="bg-amber-100 rounded-2xl p-3 border-2 border-dashed border-amber-400 inline-block w-48">
-                          <p className="text-xs font-bold text-amber-900">도형 박사 점수</p>
-                          <p className="text-3xl font-black text-orange-600">{score}점</p>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-sm font-black text-slate-800 border-b border-amber-300 pb-1 mb-2">
-                          ✍️ 오답 정리 노트
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[35vh] overflow-y-auto pr-1 pb-1">
-                          {quizData.map((quiz, idx) => {
-                            const isUserCorrect = userAnswers[idx] === quiz.answer;
-                            return (
-                              <div key={quiz.id} className={`p-2.5 rounded-xl border text-[11px] ${isUserCorrect ? 'bg-emerald-50 border-emerald-100' : 'bg-rose-50 border-rose-200'}`}>
-                                <div className="flex justify-between items-center mb-1.5">
-                                  <span className="font-bold text-slate-700">Q{quiz.id}. {quiz.category}</span>
-                                  <span className={`px-1.5 py-0.5 rounded font-black text-[9px] ${isUserCorrect ? 'bg-emerald-200 text-emerald-800' : 'bg-rose-200 text-rose-800'}`}>
-                                    {isUserCorrect ? '⭕ 맞힘' : '❌ 틀림'}
-                                  </span>
-                                </div>
-                                <p className="font-semibold text-slate-600 truncate">{quiz.question}</p>
-                                <div className="mt-1.5 bg-white/60 p-1.5 rounded-lg border border-slate-100/50">
-                                  <p className="text-slate-500"><strong className="text-slate-800">정답:</strong> {quiz.answer} <span className="mx-1 text-slate-300">|</span> <strong className="text-slate-800">선택:</strong> {userAnswers[idx] || '미응답'}</p>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2 pt-1">
-                        <button onClick={handleRestart} className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl shadow-sm text-sm active:scale-95">
-                          🔄 다시 풀기
-                        </button>
-                        <button onClick={() => {setIsStarted(false); setUserName(''); setShowResult(false);}} className="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl shadow-sm text-sm active:scale-95">
-                          🏠 첫 화면으로
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                    )}
                 </div>
-              </div>
             </div>
-          );
-        }
+        </div>
+    );
+}
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
     </script>
 </body>
 </html>
